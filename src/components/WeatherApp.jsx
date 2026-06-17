@@ -31,9 +31,12 @@ const WeatherApp = () => {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${api_key}`;
         const res = await fetch(url);
         const searchData = await res.json();
-        console.log(searchData);
-        setData(searchData);
-        setLocation("");
+        if(searchData.cod !==200){
+            setData({notFound : true})
+        } else {
+            setData(searchData);
+            setLocation("");
+        }
     }
     const currentDate = new Date();
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed","Thu", "Fri", "Sat"];
@@ -76,6 +79,7 @@ const WeatherApp = () => {
                     <i className="fa-solid fa-magnifying-glass" onClick={search}></i>
                 </div>
             </div>
+            {data.notFound ? (<div className='not-found'>Not Found 😒</div>) : (
             <div className="weather">
                 <img src={weatherImage} alt={weatherImage}/>
                 <div className="weather-type">{data.weather? data.weather[0].main: null}</div>
@@ -98,6 +102,7 @@ const WeatherApp = () => {
                     </div>
                 </div>
             </div>
+            )}
         </div>
     </div>
   )
