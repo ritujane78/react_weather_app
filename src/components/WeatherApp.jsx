@@ -35,6 +35,14 @@ const WeatherApp = () => {
         setData(searchData);
         setLocation("");
     }
+    const currentDate = new Date();
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed","Thu", "Fri", "Sat"];
+    const months = ["Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
+    const dayOfWeek = daysOfWeek[currentDate.getDay()];
+    const month = months[currentDate.getMonth()];
+    const dayOfMonth = currentDate.getDate();
+    const formattedDate = `${dayOfWeek}, ${dayOfMonth} ${month}`;
     const weatherImages = {
         Clear: sunny,
         Clouds: cloudy,
@@ -74,7 +82,7 @@ const WeatherApp = () => {
                 <div className="temp">{data.main? `${Math.floor(data.main.temp - 273.15)}°`: null}</div>
                 <div className="weather-date">
                     <p>
-                        Fri, 3 May
+                        {formattedDate}
                     </p>
                 </div>
                 <div className="weather-data">
