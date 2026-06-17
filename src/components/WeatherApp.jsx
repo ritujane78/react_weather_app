@@ -2,20 +2,24 @@ import sunny from '../assets/images/sunny.png'
 import cloudy from '../assets/images/cloudy.png'
 import rainy from '../assets/images/rainy.png'
 import snowy from '../assets/images/snowy.png'
+import loadingGif from '../assets/images/loading.gif'
 import './WeatherApp.css'
 import { useEffect, useState } from 'react'
 
 const WeatherApp = () => {
     const [data, setData] = useState({});
     const [location, setLocation] = useState("");
+    const [loading, setLoading] = useState(false);
     const api_key = '9b4d62eaa1d16680326fb4d9df2bb5d5'
     useEffect(() => {
         const fetchDefaultWeather = async () => {
+            setLoading(true);
             const defaultLocation = "Kathmandu";
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${api_key}`;       
             const res = await fetch(url);
             const searchData = await res.json();
             setData(searchData);
+            setLoading(false);
         }
         fetchDefaultWeather();
     }, [])
@@ -37,6 +41,7 @@ const WeatherApp = () => {
             setData(searchData);
             setLocation("");
         }
+        setLoading(false);
     }
     const currentDate = new Date();
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed","Thu", "Fri", "Sat"];
@@ -79,7 +84,8 @@ const WeatherApp = () => {
                     <i className="fa-solid fa-magnifying-glass" onClick={search}></i>
                 </div>
             </div>
-            {data.notFound ? (<div className='not-found'>Not Found 😒</div>) : (
+            {loading? ( <img className="loader" src={loadingGif} alt='loading' /> )
+            : data.notFound ? (<div className='not-found'>Not Found 😒</div>) : (
             <div className="weather">
                 <img src={weatherImage} alt={weatherImage}/>
                 <div className="weather-type">{data.weather? data.weather[0].main: null}</div>
